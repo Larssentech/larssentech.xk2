@@ -1,0 +1,11 @@
+[SETTINGS_DO_NOT_EDIT]
+XKomm.driverName=com.mysql.jdbc.Driver
+XKomm.server=xkomm.larssentech.org
+#XKomm.server=localhost
+XKomm.protocol=jdbc:mysql://
+XKomm.port=3306
+XKomm.schema=xkomm
+XKomm.user=xkomm
+XKomm.password=7q+P#mnL;#3^
+XKomm.vendor=MySQL
+XKomm.netport=60001
