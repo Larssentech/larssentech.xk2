@@ -18,8 +18,8 @@ import org.larssentech.xkomm2.ui.shared.util.Xkomm2Theme;
 
 public class ContactContainer extends JScrollPane {
 
-	final JList<UserEntry> contactLizt = new JList<UserEntry>();
-	private final DefaultListModel<UserEntry> model = new DefaultListModel<UserEntry>();
+	final JList contactLizt = new JList();
+	private final DefaultListModel model = new DefaultListModel();
 
 	public ContactContainer() {
 
@@ -59,14 +59,14 @@ public class ContactContainer extends JScrollPane {
 		for (int i = 0; i < this.model.size(); i++) if (!emails.contains(this.model.get(i))) this.updateLizt(emails);
 
 	}
-
+	
 	private static List<UserEntry> sortByStatus(List<UserEntry> emails) {
 
 		List<UserEntry> sortedList = new ArrayList<UserEntry>();
 
-		for (UserEntry thisEntry : emails) if (thisEntry.isOnline()) sortedList.add(thisEntry);
+		for (int i=0; i<emails.size(); i++) if (emails.get(i).isOnline()) sortedList.add(emails.get(i));
 
-		for (UserEntry thisEntry : emails) if (!thisEntry.isOnline()) sortedList.add(thisEntry);
+		for (int i=0; i<emails.size(); i++) if (!emails.get(i).isOnline()) sortedList.add(emails.get(i));
 
 		return sortedList;
 
@@ -77,7 +77,7 @@ public class ContactContainer extends JScrollPane {
 
 		this.contactLizt.setEnabled(b);
 
-		for (int i = 0; i < this.model.size(); i++) this.model.get(i).setEnabled(b);
+		for (int i = 0; i < this.model.size(); i++) ((Component) this.model.get(i)).setEnabled(b);
 	}
 
 	private void updateLizt(List<UserEntry> newLizt) {
@@ -109,7 +109,7 @@ public class ContactContainer extends JScrollPane {
 		return returnArray;
 	}
 
-	public JList<UserEntry> getContactLizt() {
+	public JList getContactLizt() {
 
 		return this.contactLizt;
 	}
@@ -121,7 +121,7 @@ public class ContactContainer extends JScrollPane {
 
 }
 
-class LiztCellRenderer extends JLabel implements ListCellRenderer<Object> {
+class LiztCellRenderer extends JLabel implements ListCellRenderer {
 
 	public LiztCellRenderer() {
 
@@ -129,7 +129,7 @@ class LiztCellRenderer extends JLabel implements ListCellRenderer<Object> {
 
 	}
 
-	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
 		UserEntry entry = (UserEntry) value;
 

@@ -184,7 +184,7 @@ public interface Constants4Uis extends Constants4API, Version4Xk2 {
 
 	String ALERT_SELECT_A_CONTACT = "Select a Contact to Delete...";
 	String ALERT_EXIT_CONFIRM = "Exit XKomm2?";
-	String COPYRIGHT = "(c) 2014-2024 Larssentech";
+	String COPYRIGHT = "(c) 2014-2026 Larssentech";
 	String ALERT_SHOW_PUK = "User PUK";
 	String XKOMM = "XK2";
 	String DOT = ".";

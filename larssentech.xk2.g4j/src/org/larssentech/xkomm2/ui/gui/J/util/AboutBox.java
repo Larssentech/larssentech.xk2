@@ -36,10 +36,10 @@ public class AboutBox extends JDialog {
 		this.setResizable(true);
 		this.getContentPane().setBackground(Xkomm2Theme.getBackground());
 		this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
-		this.setSize(300, 300);
+		this.setSize(500, 400);
 		this.setTitle("About XK2J");
 
-		this.image = Toolkit.getDefaultToolkit().createImage("xk2s.png");
+		this.image = Toolkit.getDefaultToolkit().createImage("xk2.png");
 
 		this.imageLabel = new JLabel(new ImageIcon(this.image));
 		this.imageLabel.setBackground(Xkomm2Theme.getBackground());
