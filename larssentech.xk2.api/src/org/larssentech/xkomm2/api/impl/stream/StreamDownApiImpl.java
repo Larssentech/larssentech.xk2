@@ -31,7 +31,6 @@ import org.larssentech.xkomm.core.obj.constants.NetworkConstants;
 import org.larssentech.xkomm.core.obj.objects.Message;
 import org.larssentech.xkomm.core.obj.objects.User;
 import org.larssentech.xkomm.core.obj.util.Logger;
-import org.larssentech.xkomm2.api.impl.crypto.CtkApiImpl;
 import org.larssentech.xkomm2.api.impl.message.MessageApiImpl;
 import org.larssentech.xkomm2.api.impl.system.UpdateApiImpl;
 import org.larssentech.xkomm2.api.xapi.Xkomm2Api;
@@ -69,7 +68,7 @@ public class StreamDownApiImpl implements Constants4Stream {
 				try {
 
 					byte[] encryptedBytes = new Base64().decode(base64EncryptedBlock);
-					byte[] returnBytes = CtkApiImpl.blowfishDecrypt(encryptedBytes, puk);
+					byte[] returnBytes = Xkomm2Api.ctkApiImpl.blowfishDecrypt(encryptedBytes, puk);
 					this.bytesDone = this.bytesDone + returnBytes.length;
 
 					return this.write(returnBytes);
@@ -92,8 +91,7 @@ public class StreamDownApiImpl implements Constants4Stream {
 
 			// Update XKomm2 JAR pushes
 			if (file.getAbsolutePath().endsWith(Constants4API.XKOMM_JAR)) file = new File(Constants4API.XKOMM_JAR);
-			if (file.getAbsolutePath().endsWith(Constants4API.XKOMM_JM_JAR))
-				file = new File(Constants4API.XKOMM_JM_JAR);
+			if (file.getAbsolutePath().endsWith(Constants4API.XKOMM_JM_JAR)) file = new File(Constants4API.XKOMM_JM_JAR);
 			if (file.getAbsolutePath().endsWith(Constants4API.XKOMM_K_JAR)) file = new File(Constants4API.XKOMM_K_JAR);
 
 			// Make sure we start afresh when we receive block 0
@@ -122,9 +120,9 @@ public class StreamDownApiImpl implements Constants4Stream {
 			else {
 
 				if (lastBlock != blockNum - 1) {
-					Logger.pl("-------------------------------------------------");
-					Logger.pl("|  MISSING BLOCK: " + blockNum + "; Your download is corrupted.");
-					Logger.pl("-------------------------------------------------");
+					Logger.log("-------------------------------------------------");
+					Logger.log("|  MISSING BLOCK: " + blockNum + "; Your download is corrupted.");
+					Logger.log("-------------------------------------------------");
 				}
 
 				// For info
@@ -135,19 +133,16 @@ public class StreamDownApiImpl implements Constants4Stream {
 				// first blocks
 				if (null != StreamDownApiImpl.getDownStreamSpec4(sender)) {
 
-					StreamDownApiImpl.getDownStreamSpec4(sender)
-							.setCompletedP100(Math.round(100 * (blockNum) / blocks));
+					StreamDownApiImpl.getDownStreamSpec4(sender).setCompletedP100(Math.round(100 * (blockNum) / blocks));
 
-					Xkomm2Api.apiPl(DLOAD_PROGRESS + " Block " + (blockNum) + " of " + blocks + " - "
-							+ StreamDownApiImpl.getDownStreamSpec4(sender).getCompletedP100() + PER100);
+					Xkomm2Api.apiPl(DLOAD_PROGRESS + " Block " + (blockNum) + " of " + blocks + " - " + StreamDownApiImpl.getDownStreamSpec4(sender).getCompletedP100() + PER100);
 
 					// The actual appending to file, write and close
 					s.writeNext(b64, puk);
 					s.writer.closeStream();
 
 					lastBlock = blockNum;
-					if (StreamDownApiImpl.getDownStreamSpec4(sender).getCompletedP100() == 100)
-						this.notifyParties(sender, h.getStreamHeader().getFile().getName(), blockNum);
+					if (StreamDownApiImpl.getDownStreamSpec4(sender).getCompletedP100() == 100) this.notifyParties(sender, h.getStreamHeader().getFile().getName(), blockNum);
 				}
 			}
 
@@ -239,8 +234,7 @@ public class StreamDownApiImpl implements Constants4Stream {
 
 			if (MessageApiImpl.isStream(message)) {
 
-				return StreamDownApiImpl.stream2File.streamToFile(from, message.getBodyBytes(), true,
-						u.getKeyPair().getPuk());
+				return StreamDownApiImpl.stream2File.streamToFile(from, message.getBodyBytes(), true, u.getKeyPair().getPuk());
 			}
 		}
 

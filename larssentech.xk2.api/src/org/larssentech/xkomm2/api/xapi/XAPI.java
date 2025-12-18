@@ -373,8 +373,7 @@ public abstract class XAPI implements HistoryConstants {
 
 	public static void apiSendFile(String contactString, String fileName) {
 
-		StreamUpApiImpl.streamFromFileX(contactString, Hub.hubGetContact4(contactString).getKeyPair().getPuk(),
-				new File(fileName));
+		StreamUpApiImpl.streamFromFileX(contactString, Hub.hubGetContact4(contactString).getKeyPair().getPuk(), new File(fileName));
 	}
 
 	/**

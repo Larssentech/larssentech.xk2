@@ -13,7 +13,6 @@ import javax.swing.JLabel;
 
 import org.larssentech.lib.awtlib.GUITool;
 import org.larssentech.xkomm2.core.obj.version.Version4Xk2;
-import org.larssentech.xkomm2.ui.gui.J.constants.GReg;
 import org.larssentech.xkomm2.ui.shared.constants.Constants4Uis;
 import org.larssentech.xkomm2.ui.shared.util.Xkomm2Theme;
 
@@ -47,7 +46,11 @@ public class AboutBox extends JDialog {
 		this.messageLabel1 = new Label();
 		this.messageLabel1.setAlignment(1);
 		this.messageLabel1.setPreferredSize(new Dimension(400, 15));
-		this.messageLabel1.setText("XK2J: GUI " + GReg.J_VERSION + " - XK2 Core v" + Version4Xk2.BASE_VERSION_STRING);
+		this.messageLabel1.setText(
+
+				Version4Xk2.ABOUT_VERSION
+
+		);
 		this.messageLabel1.setBackground(Xkomm2Theme.getBackground());
 		this.messageLabel1.setForeground(Xkomm2Theme.getForeground());
 
@@ -66,5 +69,4 @@ public class AboutBox extends JDialog {
 		GUITool.center(this);
 		this.setVisible(true);
 	}
-
 }

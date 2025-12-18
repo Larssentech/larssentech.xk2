@@ -25,7 +25,7 @@ import java.awt.MenuItem;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import org.larssentech.lib.basiclib.console.Out;
+import org.larssentech.lib.log.Logg3r;
 import org.larssentech.xkomm2.ui.gui.J.constants.GReg;
 import org.larssentech.xkomm2.ui.shared.functions.Functions4Inactivity;
 import org.larssentech.xkomm2.ui.shared.functions.Functions4Lock;
@@ -111,7 +111,7 @@ class MainFrameMenuAccount extends Menu {
 
 				Functions4Lock.setLockNeeded(!Functions4Lock.isScreenLockNeeded());
 
-				Out.pl(GReg.TERM_LOCK_NEEDED + Functions4Lock.isScreenLockNeeded());
+				Logg3r.log(GReg.TERM_LOCK_NEEDED + Functions4Lock.isScreenLockNeeded());
 			}
 		});
 	}

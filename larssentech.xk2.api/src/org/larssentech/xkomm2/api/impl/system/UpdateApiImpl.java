@@ -43,7 +43,7 @@ public class UpdateApiImpl {
 
 		if (file.getAbsolutePath().endsWith(Constants4API.XKOMM_JAR) || file.getAbsolutePath().endsWith(Constants4API.XKOMM_JM_JAR) || file.getAbsolutePath().endsWith(Constants4API.XKOMM_K_JAR)) {
 
-			Logger.pl(Constants4Stream.DATA_BLOCKS + streamHeader.getBlockNum() + Constants4Stream.OF + streamHeader.getNumBlocks());
+			Logger.log(Constants4Stream.DATA_BLOCKS + streamHeader.getBlockNum() + Constants4Stream.OF + streamHeader.getNumBlocks());
 
 			if (streamHeader.getBlockNum() == streamHeader.getNumBlocks() - 1) {
 

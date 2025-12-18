@@ -19,7 +19,7 @@ package org.larssentech.xkomm2.api.impl.login;
 
 import org.larssentech.lib.basiclib.settings.SettingsUpdater;
 import org.larssentech.xkomm.core.obj.objects.AccountPack;
-import org.larssentech.xkomm2.api.impl.crypto.CtkApiImpl;
+import org.larssentech.xkomm2.api.xapi.Xkomm2Api;
 
 public class AccountPackEncoder extends AccountPack {
 
@@ -38,11 +38,11 @@ public class AccountPackEncoder extends AccountPack {
 		// Migrate plain text password to encrypted
 		if (this.plainPass.length() > 0) {
 
-			if (this.plainPass.length() < 100) this.encPass = CtkApiImpl.encPass4Me(this.plainPass);
+			if (this.plainPass.length() < 100) this.encPass = Xkomm2Api.ctkApiImpl.encPass4Me(this.plainPass);
 
 			else {
 				this.encPass = this.plainPass;
-				this.plainPass = CtkApiImpl.decPass4Me(this.encPass);
+				this.plainPass = Xkomm2Api.ctkApiImpl.decPass4Me(this.encPass);
 
 			}
 		}
@@ -53,7 +53,7 @@ public class AccountPackEncoder extends AccountPack {
 	@Override
 	public void persist(String accountFile) {
 
-		String tempEncPass = CtkApiImpl.encPass4Me(this.plainPass);
+		String tempEncPass = Xkomm2Api.ctkApiImpl.encPass4Me(this.plainPass);
 
 		SettingsUpdater.updateLine(accountFile, "XKomm.login", this.login);
 		SettingsUpdater.updateLine(accountFile, "XKomm.pass", tempEncPass);

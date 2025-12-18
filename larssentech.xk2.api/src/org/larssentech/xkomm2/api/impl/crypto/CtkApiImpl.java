@@ -18,7 +18,11 @@
 
 package org.larssentech.xkomm2.api.impl.crypto;
 
+import java.io.File;
+
 import org.larssentech.CTK.driver.EmbeddedApi;
+import org.larssentech.CTK.settings.CTKSettings;
+import org.larssentech.CTK.settings.RSAPathBundle;
 import org.larssentech.lib.CTK.objects.PUK;
 import org.larssentech.lib.basiclib.toolkit.StringManipulationToolkit;
 import org.larssentech.xkomm.core.obj.constants.NetworkConstants;
@@ -26,27 +30,39 @@ import org.larssentech.xkomm.core.obj.objects.Message;
 import org.larssentech.xkomm.core.obj.objects.User;
 import org.larssentech.xkomm2.api.xapi.Xkomm2Api;
 
-public class CtkApiImpl implements NetworkConstants {
+public class CtkApiImpl implements NetworkConstants, CTKSettings {
+
+	private final EmbeddedApi ctk;
 
 	public CtkApiImpl() {
 
-		new EmbeddedApi();
+		RSAPathBundle.setOwnPKPath(OWN_PRI_K_ABS_PATH);
+		RSAPathBundle.setOwnPUKPath(OWN_PUB_K_ABS_PATH);
+		RSAPathBundle.setOwnKeyPairPath(OWN_KEYPAIR_ABS_PATH);
+		RSAPathBundle.setCipherString("RSA");
+
+		// For out contact library
+		new File(CTKSettings.HOME_DIR + CTKSettings.SEP + "nxrsa_pub_key_lib").mkdir();
+		new File(CTKSettings.HOME_DIR + CTKSettings.SEP + CTKSettings.CTK_HOME).mkdir();
+		new File(CTKSettings.HOME_DIR + CTKSettings.SEP + CTKSettings.OWN_RSA_DIR).mkdir();
+
+		this.ctk = new EmbeddedApi();
 	}
 
-	public static void decodeMessage(Message message) {
+	public void decodeMessage(Message message) {
 
 		if (message.isDelivered()) {
 
-			message.setBodyBytes(CtkApiImpl.decVer(message.getBodyBytes(), message.getFrom().getKeyPair().getPuk()));
+			message.setBodyBytes(this.decVer(message.getBodyBytes(), message.getFrom().getKeyPair().getPuk()));
 			message.setBodyBytes(decode(message.getBodyBytes()));
 			message.setGood(true);
 		}
 	}
 
-	public static void encodeMessage(User user, Message message) {
+	public void encodeMessage(User user, Message message) {
 
 		message.setBodyBytes(encode(message.getBodyBytes()));
-		message.setBodyBytes(CtkApiImpl.encSign(message.getBodyBytes(), user.getKeyPair().getPuk()));
+		message.setBodyBytes(this.encSign(message.getBodyBytes(), user.getKeyPair().getPuk()));
 
 		message.setGood(true);
 	}
@@ -61,38 +77,38 @@ public class CtkApiImpl implements NetworkConstants {
 		return StringManipulationToolkit.HTMLEncodeString(new String(body)).getBytes();
 	}
 
-	private static byte[] encSign(byte[] plainText, PUK contactPuk) {
+	private byte[] encSign(byte[] plainText, PUK contactPuk) {
 
-		return EmbeddedApi.encryptSignMessage(plainText, contactPuk);
+		return this.ctk.encryptSignMessage(plainText, contactPuk);
 	}
 
-	private static byte[] decVer(byte[] cipherText, PUK contactPuk) {
+	private byte[] decVer(byte[] cipherText, PUK contactPuk) {
 
-		return EmbeddedApi.decryptVerifyMessage(cipherText, contactPuk);
+		return this.ctk.decryptVerifyMessage(cipherText, contactPuk);
 	}
 
-	public static byte[] blowfishEncrypt(byte[] plainBinaryBlock, long bytesDone, PUK contactPuk) {
+	public byte[] blowfishEncrypt(byte[] plainBinaryBlock, long bytesDone, PUK contactPuk) {
 
-		return EmbeddedApi.encryptBlowfish(plainBinaryBlock, bytesDone, contactPuk);
+		return this.ctk.encryptBlowfish(plainBinaryBlock, bytesDone, contactPuk);
 	}
 
-	public static byte[] blowfishDecrypt(byte[] encryptedBytes, PUK puk) {
+	public byte[] blowfishDecrypt(byte[] encryptedBytes, PUK puk) {
 
-		return EmbeddedApi.decryptBlowfish(encryptedBytes, puk);
+		return this.ctk.decryptBlowfish(encryptedBytes, puk);
 	}
 
-	public static String encPass4Server(String plainPass) {
+	public String encPass4Server(String plainPass) {
 
-		return new String(CtkApiImpl.encSign(plainPass.getBytes(), Xkomm2Api.apiGetServerPuk()));
+		return new String(this.encSign(plainPass.getBytes(), Xkomm2Api.apiGetServerPuk()));
 	}
 
-	public static String encPass4Me(String plainPass) {
+	public String encPass4Me(String plainPass) {
 
-		return new String(CtkApiImpl.encSign(plainPass.getBytes(), Xkomm2Api.apiLoadPuk4Me()));
+		return new String(this.encSign(plainPass.getBytes(), Xkomm2Api.apiLoadPuk4Me()));
 	}
 
-	public static String decPass4Me(String encPass) {
+	public String decPass4Me(String encPass) {
 
-		return new String(CtkApiImpl.decVer(encPass.getBytes(), Xkomm2Api.apiLoadPuk4Me()));
+		return new String(this.decVer(encPass.getBytes(), Xkomm2Api.apiLoadPuk4Me()));
 	}
 }

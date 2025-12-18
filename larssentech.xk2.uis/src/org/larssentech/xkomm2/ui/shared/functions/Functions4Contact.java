@@ -51,7 +51,10 @@ public class Functions4Contact {
 	public static boolean createContact(String to) {
 
 		// Check login is correct and user confirmation
-		if (!Xkomm2Api.apiIsContact(to)) { Xkomm2Api.apiInviteUser(to); return true; }
+		if (!Xkomm2Api.apiIsContact(to)) {
+			Xkomm2Api.apiInviteUser(to);
+			return true;
+		}
 
 		return false;
 	}
@@ -63,12 +66,11 @@ public class Functions4Contact {
 		new Frame4Contact(p, Constants4Uis.LOGIN_COLS).makePretty(300, 150);
 
 		// Check login is correct...
-		if (LoginChecker.isGood(p.getLogin()))
-			if (new Alert(Xkomm2Theme.getBackground(), Xkomm2Theme.getForeground()).showConfirm(Constants4Uis.ALERT_ADD_CONT_1 + p.getLogin() + Constants4Uis.ALERT_ADD_CONT_2)) {
+		if (LoginChecker.isGood(p.getLogin())) if (new Alert(Xkomm2Theme.getBackground(), Xkomm2Theme.getForeground()).showConfirm(Constants4Uis.ALERT_ADD_CONT_1 + p.getLogin() + Constants4Uis.ALERT_ADD_CONT_2)) {
 
-				Functions4Contact.requestInviteUser(p.getLogin());
-				new Alert(Xkomm2Theme.getBackground(), Xkomm2Theme.getForeground()).showMessage(Constants4Uis.TITLE_J, Constants4Uis.ALERT_INVITE_SENT);
-			}
+			Functions4Contact.requestInviteUser(p.getLogin());
+			new Alert(Xkomm2Theme.getBackground(), Xkomm2Theme.getForeground()).showMessage(Constants4Uis.TITLE_J, Constants4Uis.ALERT_INVITE_SENT);
+		}
 	}
 
 	public static boolean requestDeleteContact(String contactString) {

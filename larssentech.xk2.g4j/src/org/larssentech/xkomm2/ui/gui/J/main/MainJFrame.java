@@ -68,7 +68,8 @@ class MainJFrame extends JFrame {
 		this.build(Functions4Contact.requestMyEmail());
 
 		// Start the Thread to keep it all orchestrated
-		new MainJThread(this).start();
+		MainJThread m = new MainJThread(this);
+		m.start();
 	}
 
 	private void build(String login) {
@@ -95,10 +96,16 @@ class MainJFrame extends JFrame {
 		this.setVisible(true);
 	}
 
-	static ContactContainer getContactContainer() { return MainJFrame.contactContainer; }
+	static ContactContainer getContactContainer() {
+		return MainJFrame.contactContainer;
+	}
 
-	static MainZtatuzBar getMainZtatuzBar() { return MainJFrame.mainZtatuzBar; }
+	static MainZtatuzBar getMainZtatuzBar() {
+		return MainJFrame.mainZtatuzBar;
+	}
 
-	static Panel getOnlineBar() { return MainJFrame.onlineBar; }
+	static Panel getOnlineBar() {
+		return MainJFrame.onlineBar;
+	}
 }
 // <-- Max 100 lines!

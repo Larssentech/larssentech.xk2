@@ -18,7 +18,8 @@
 
 package org.larssentech.xkomm2.ui.gui.J;
 
-import org.larssentech.lib.basiclib.console.Out;
+import org.larssentech.fx.embed.FxEmbedParams;
+import org.larssentech.xkomm.core.obj.util.Logger;
 import org.larssentech.xkomm2.core.obj.version.Version4Xk2;
 import org.larssentech.xkomm2.ui.gui.J.constants.GReg;
 import org.larssentech.xkomm2.ui.gui.J.main.Launcher4MainJ;
@@ -57,11 +58,12 @@ public class XK2J {
 	 */
 	public static void print() {
 
-		Out.pl("");
-		Out.pl("------------------------------------------");
-		Out.pl("Larssentech XKomm Version: " + Version4Xk2.BASE_VERSION_STRING);
-		Out.pl("XK2J GUI " + GReg.J_VERSION);
-		Out.pl("------------------------------------------");
-		Out.pl("");
+		Logger.log("");
+		Logger.log("------------------------------------------");
+		Logger.log("Larssentech XKomm Version: " + Version4Xk2.BASE_VERSION_STRING);
+		Logger.log("XK2J GUI " + GReg.J_VERSION);
+		Logger.log("FileXare " + FxEmbedParams.VERSION);
+		Logger.log("------------------------------------------");
+		Logger.log("");
 	}
 }

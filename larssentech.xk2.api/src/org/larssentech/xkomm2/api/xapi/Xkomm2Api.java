@@ -36,6 +36,7 @@ import org.larssentech.xkomm.core.obj.objects.User;
 import org.larssentech.xkomm.core.obj.util.Logger;
 import org.larssentech.xkomm.core.util.CoreUtil;
 import org.larssentech.xkomm2.api.impl.crypto.CipherApiImpl;
+import org.larssentech.xkomm2.api.impl.crypto.CtkApiImpl;
 import org.larssentech.xkomm2.api.impl.login.AccountPackEncoder;
 import org.larssentech.xkomm2.api.impl.message.MessageApiImpl;
 import org.larssentech.xkomm2.api.impl.stream.StreamDownApiImpl;
@@ -53,6 +54,8 @@ import org.larssentech.xkomm2.core.obj.objects.StreamSpec;
  */
 public abstract class Xkomm2Api implements HistoryConstants {
 
+	public static final CtkApiImpl ctkApiImpl = new CtkApiImpl();
+
 	public static boolean apiGetContactStatusHaveChanged() {
 
 		return Hub.hubDetectStatusChanges();
@@ -60,7 +63,7 @@ public abstract class Xkomm2Api implements HistoryConstants {
 
 	public static void apiLogError(Exception e) {
 
-		Logger.logError(e);
+		Logger.log(e.toString());
 	}
 
 	public static void apiSetLoggingEnabled(boolean enabled) {
@@ -169,7 +172,7 @@ public abstract class Xkomm2Api implements HistoryConstants {
 
 	public static void apiPl(String message) {
 
-		Logger.pl(message);
+		Logger.log(message);
 	}
 
 	/**
@@ -349,8 +352,7 @@ public abstract class Xkomm2Api implements HistoryConstants {
 
 	public static void apiSendFile(String contactString, String fileName) {
 
-		StreamUpApiImpl.streamFromFileX(contactString, Hub.hubGetContact4(contactString).getKeyPair().getPuk(),
-				new File(fileName));
+		StreamUpApiImpl.streamFromFileX(contactString, Hub.hubGetContact4(contactString).getKeyPair().getPuk(), new File(fileName));
 	}
 
 	/**

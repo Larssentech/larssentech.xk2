@@ -90,8 +90,7 @@ public class Functions4System {
 
 	static int getLockLimit() {
 
-		if (SettingsExtractor.extractThis4(Constants4Uis.USER_FILE_PATH, Constants4Uis.SET_SCREEN_LOCK_LIMIT).length() == 0)
-			SettingsUpdater.updateLine(Constants4Uis.USER_FILE_PATH, Constants4Uis.SET_SCREEN_LOCK_LIMIT, Constants4Uis.DEF_SCREEN_LOCK_LIMIT);
+		if (SettingsExtractor.extractThis4(Constants4Uis.USER_FILE_PATH, Constants4Uis.SET_SCREEN_LOCK_LIMIT).length() == 0) SettingsUpdater.updateLine(Constants4Uis.USER_FILE_PATH, Constants4Uis.SET_SCREEN_LOCK_LIMIT, Constants4Uis.DEF_SCREEN_LOCK_LIMIT);
 
 		return Integer.parseInt(SettingsExtractor.extractThis4(Constants4Uis.USER_FILE_PATH, Constants4Uis.SET_LOCK_SCREEN_TIMEOUT));
 	}

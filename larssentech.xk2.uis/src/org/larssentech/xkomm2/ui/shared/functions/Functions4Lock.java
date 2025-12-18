@@ -30,7 +30,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import org.larssentech.xkomm2.api.impl.crypto.CtkApiImpl;
 import org.larssentech.xkomm2.api.xapi.Xkomm2Api;
 import org.larssentech.xkomm2.ui.shared.chat.ChatRoomMan;
 import org.larssentech.xkomm2.ui.shared.constants.Constants4Uis;
@@ -178,14 +177,16 @@ public class Functions4Lock {
 				public void actionPerformed(ActionEvent e) {
 
 					// Yes
-					if (e.getActionCommand().equals(Constants4Uis.LBL_YES)) { processPassword(); }
+					if (e.getActionCommand().equals(Constants4Uis.LBL_YES)) {
+						processPassword();
+					}
 				}
 			});
 		}
 
 		private void processPassword() {
 
-			if (CtkApiImpl.decPass4Me(Functions4System.loadMyEncPassword()).equals(this.plainPassField.getText())) this.dispose();
+			if (Xkomm2Api.ctkApiImpl.decPass4Me(Functions4System.loadMyEncPassword()).equals(this.plainPassField.getText())) this.dispose();
 		}
 
 		private String showPasswordInput(String messageLabel) {

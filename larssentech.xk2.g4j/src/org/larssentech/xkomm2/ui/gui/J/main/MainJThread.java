@@ -47,6 +47,7 @@ class MainJThread extends Thread {
 
 				// And sleep a bit
 				Thread.sleep(GReg.FRAME4MAIN_SLEEP_FAST);
+
 			} catch (Exception e) {
 
 				// Log errors

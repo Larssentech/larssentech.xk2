@@ -20,11 +20,12 @@ package org.larssentech.xkomm2.ui.gui.J.main;
 
 import java.awt.Color;
 
-import org.larssentech.lib.basiclib.console.Out;
+import org.larssentech.lib.log.Logg3r;
 import org.larssentech.xkomm2.ui.gui.J.chat.Launcher4ChatJ;
 import org.larssentech.xkomm2.ui.gui.J.constants.GReg;
 import org.larssentech.xkomm2.ui.shared.functions.Functions4Common;
 import org.larssentech.xkomm2.ui.shared.functions.Functions4Contact;
+import org.larssentech.xkomm2.ui.shared.functions.Functions4Fx;
 import org.larssentech.xkomm2.ui.shared.functions.Functions4System;
 import org.larssentech.xkomm2.ui.shared.util.InformationPanels;
 import org.larssentech.xkomm2.ui.shared.util.Xkomm2Theme;
@@ -41,8 +42,7 @@ class MainJExec {
 	static void doDisplayContactInfo(String contactString) {
 
 		// Display the relevant info aboot' the contact
-		InformationPanels.displayContactProperties(contactString, Functions4Contact.requestIdForEmail(contactString), Functions4Contact.requestInactiveMode4(contactString),
-				Functions4Contact.requestLastSeen4(contactString).toString());
+		InformationPanels.displayContactProperties(contactString, Functions4Contact.requestIdForEmail(contactString), Functions4Contact.requestInactiveMode4(contactString), Functions4Contact.requestLastSeen4(contactString).toString());
 	}
 
 	static void doSuspend(boolean b) {
@@ -50,7 +50,7 @@ class MainJExec {
 		Functions4System.requestSuspend(b);
 
 		MainJExec.suspended = b;
-		Out.pl(GReg.MSG_SUSPEND + b);
+		Logg3r.log(GReg.MSG_SUSPEND + b);
 	}
 
 	/**
@@ -65,11 +65,18 @@ class MainJExec {
 		MainJExec.WidgetRefresh.doRefreshOnline(online);
 		MainJExec.WidgetRefresh.doRefreshStatuz(online);
 		MainJExec.doCheck4Messages();
+
+		/*- 20251215 - FX integration begins */
+		// MainJExec.doMonitorFx(online);
+	}
+
+	private static void doMonitorFx(boolean online) {
+		Functions4Fx.monitor(online);
 	}
 
 	/**
-	 * Method to check for available messages in order to launch a chat frame
-	 * for the contact whose messages are waiting
+	 * Method to check for available messages in order to launch a chat frame for
+	 * the contact whose messages are waiting
 	 */
 	private static void doCheck4Messages() {
 
@@ -89,16 +96,19 @@ class MainJExec {
 		return MainJFrame.getContactContainer().getSelectedUserEntry() != null && MainJFrame.getContactContainer().getSelectedUserEntry().length() > 0;
 	}
 
-	static String getSelectedContact() { return MainJFrame.getContactContainer().getSelectedUserEntry(); }
+	static String getSelectedContact() {
+		return MainJFrame.getContactContainer().getSelectedUserEntry();
+	}
 
-	private static String[] getAllContacts() { return MainJFrame.getContactContainer().getAllUserEntries(); }
+	private static String[] getAllContacts() {
+		return MainJFrame.getContactContainer().getAllUserEntries();
+	}
 
 	/**
-	 * Internal class to encapsulate the actual changes to the graphical
-	 * components. This class has methods for each of the graphical components
-	 * and within each we consider the multiple scenarios the app can be in.
-	 * This allows for each of the graphical components to be independently
-	 * updated.
+	 * Internal class to encapsulate the actual changes to the graphical components.
+	 * This class has methods for each of the graphical components and within each
+	 * we consider the multiple scenarios the app can be in. This allows for each of
+	 * the graphical components to be independently updated.
 	 * 
 	 * @author Jeff Cerasuolo
 	 *
@@ -117,8 +127,7 @@ class MainJExec {
 			// // Xkomm2Theme.getDisabledColorText());
 
 			// Normal, good selection, user online or offline
-			else if (goodSelection()) updateStatus(Functions4Contact.requestActivityLabel(MainJExec.getSelectedContact()),
-					Functions4Contact.requestOnline4(MainJExec.getSelectedContact()) ? Xkomm2Theme.getOnline() : Xkomm2Theme.getGrayedOutText());
+			else if (goodSelection()) updateStatus(Functions4Contact.requestActivityLabel(MainJExec.getSelectedContact()), Functions4Contact.requestOnline4(MainJExec.getSelectedContact()) ? Xkomm2Theme.getOnline() : Xkomm2Theme.getGrayedOutText());
 
 			// If we are online, but no user appears online, connection problems
 			// else if (Functions4System.requestAllAreOffline() &&
@@ -143,7 +152,7 @@ class MainJExec {
 			// We offline else if (!online)
 			else if (!online) {
 				offlines++;
-				if(offlines <= GReg.OFFLINES_MAX) MainJFrame.getOnlineBar().setBackground(Xkomm2Theme.getOfflineTemp());
+				if (offlines <= GReg.OFFLINES_MAX) MainJFrame.getOnlineBar().setBackground(Xkomm2Theme.getOfflineTemp());
 				else MainJFrame.getOnlineBar().setBackground(Xkomm2Theme.getOffline());
 			}
 

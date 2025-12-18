@@ -28,7 +28,6 @@ import org.larssentech.xkomm.core.obj.objects.Message;
 import org.larssentech.xkomm.core.obj.objects.User;
 import org.larssentech.xkomm2.api.Sys.XAPI.ApiG;
 import org.larssentech.xkomm2.api.Sys.constants.SysConstants;
-import org.larssentech.xkomm2.api.impl.crypto.CtkApiImpl;
 import org.larssentech.xkomm2.api.impl.stream.StreamDownApiImpl;
 import org.larssentech.xkomm2.api.impl.stream.StreamUpApiImpl;
 import org.larssentech.xkomm2.api.xapi.Xkomm2Api;
@@ -91,7 +90,7 @@ public class MessageApiImpl {
 
 		Message message = Hub.hubGetNextSysFromInbox(user);
 
-		CtkApiImpl.decodeMessage(message);
+		Xkomm2Api.ctkApiImpl.decodeMessage(message);
 
 		processSys(message);
 
@@ -104,7 +103,7 @@ public class MessageApiImpl {
 
 		if (history) Impl4History.saveSent2History(message);
 
-		CtkApiImpl.encodeMessage(message.getTo(), message);
+		Xkomm2Api.ctkApiImpl.encodeMessage(message.getTo(), message);
 
 		return putInOutboxAndTrack(message).length() > 0;
 	}
@@ -115,7 +114,7 @@ public class MessageApiImpl {
 
 		Message message = Hub.hubGetNextTextFromInbox(user);
 
-		CtkApiImpl.decodeMessage(message);
+		Xkomm2Api.ctkApiImpl.decodeMessage(message);
 
 		if (save2History) Impl4History.saveReceived2History(message);
 
@@ -128,8 +127,7 @@ public class MessageApiImpl {
 		if (MessageApiImpl.isData(m)) {
 			Hub.hubPut1InOutbox(m);
 			return m.getUid();
-		}
-		else {
+		} else {
 			Hub.hubPut1InOutbox(m);
 			return m.getSid();
 		}
@@ -146,7 +144,7 @@ public class MessageApiImpl {
 
 		if (m.isGood()) {
 
-			CtkApiImpl.decodeMessage(m);
+			Xkomm2Api.ctkApiImpl.decodeMessage(m);
 
 			if (m.getType() == Message.SYS) processSys(m);
 			if (m.getType() == Message.TEXT) if (history) Impl4History.saveReceived2History(m);

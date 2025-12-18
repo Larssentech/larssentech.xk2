@@ -36,8 +36,8 @@ public class StreamReportModel {
 		if (this.uploadProgressLogs.containsKey(to)) this.uploadProgressLogs.get(to).addElement(logText);
 
 		/*
-		 * If this is the first packet, then create the vector for the contact
-		 * to whom the upload is intended.
+		 * If this is the first packet, then create the vector for the contact to whom
+		 * the upload is intended.
 		 */
 		else {
 
@@ -49,7 +49,7 @@ public class StreamReportModel {
 		/*
 		 * Print to terminal, just to be sure
 		 */
-		Logger.p(logText + " ");
+		Logger.log(logText + " ");
 	}
 
 	public String getNextUploadProgressFromLog4(String to) {
@@ -80,7 +80,7 @@ public class StreamReportModel {
 			this.downloadProgressLogs.put(to, v);
 		}
 
-		Logger.p(logText + " ");
+		Logger.log(logText + " ");
 	}
 
 	public String getNextDownloadProgressFromLog4(String to) {

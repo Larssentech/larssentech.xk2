@@ -20,8 +20,8 @@ package org.larssentech.xkomm2.api.impl.system;
 import org.larssentech.lib.CTK.objects.PUK;
 import org.larssentech.xkomm.core.hub.req.Hub;
 import org.larssentech.xkomm.core.obj.objects.User;
-import org.larssentech.xkomm2.api.impl.crypto.CtkApiImpl;
 import org.larssentech.xkomm2.api.impl.crypto.CipherApiImpl;
+import org.larssentech.xkomm2.api.impl.crypto.CtkApiImpl;
 import org.larssentech.xkomm2.api.impl.login.AccountPackEncoder;
 import org.larssentech.xkomm2.api.impl.stream.StreamDownApiImpl;
 import org.larssentech.xkomm2.api.impl.stream.StreamUpApiImpl;
@@ -73,7 +73,7 @@ public class InitApiImpl extends org.larssentech.xkomm.api.impl.Impl4Init {
 	public static boolean initialLogin(AccountPackEncoder pack) {
 
 		// Read our PUK and encrypt our password and create the "me" user
-		User me = new User(pack.getLogin(), CtkApiImpl.encPass4Server(pack.getPlainPass()), CipherApiImpl.getPuk4Me());
+		User me = new User(pack.getLogin(), Xkomm2Api.ctkApiImpl.encPass4Server(pack.getPlainPass()), CipherApiImpl.getPuk4Me());
 
 		// Set "me"
 		Hub.hubSetMe(me);

@@ -32,7 +32,6 @@ import org.larssentech.xkomm.core.obj.constants.NetworkConstants;
 import org.larssentech.xkomm.core.obj.objects.Message;
 import org.larssentech.xkomm.core.obj.objects.User;
 import org.larssentech.xkomm2.api.impl.crypto.CipherApiImpl;
-import org.larssentech.xkomm2.api.impl.crypto.CtkApiImpl;
 import org.larssentech.xkomm2.api.impl.message.MessageApiImpl;
 import org.larssentech.xkomm2.api.xapi.Xkomm2Api;
 import org.larssentech.xkomm2.core.obj.model.StreamHeaderModel;
@@ -148,12 +147,11 @@ public class StreamUpApiImpl implements Constants4Stream {
 
 					byte[] encryptedBinaryBlock;
 
-					encryptedBinaryBlock = CtkApiImpl.blowfishEncrypt(binaryBlock, usedLength, contactPuk);
+					encryptedBinaryBlock = Xkomm2Api.ctkApiImpl.blowfishEncrypt(binaryBlock, usedLength, contactPuk);
 					int encryptedLength = encryptedBinaryBlock.length;
 
 					// Encode the block to Base 64, shrink first if needed
-					base64Block = new Base64()
-							.encode(CipherApiImpl.shrink(encryptedBinaryBlock, encryptedLength, this.arrayLength));
+					base64Block = new Base64().encode(CipherApiImpl.shrink(encryptedBinaryBlock, encryptedLength, this.arrayLength));
 				} catch (EncoderException e) {
 
 					e.printStackTrace();
@@ -233,8 +231,7 @@ public class StreamUpApiImpl implements Constants4Stream {
 					while (!s.done()) {
 
 						// If we are cleared to continue to send blocks
-						if (thisStreamSpec.isDone() || thisStreamSpec.isCancelled() || thisStreamSpec.isRejected())
-							break;
+						if (thisStreamSpec.isDone() || thisStreamSpec.isCancelled() || thisStreamSpec.isRejected()) break;
 
 						// While the previous block's Uid is still being sent,
 						// wait
@@ -270,14 +267,10 @@ public class StreamUpApiImpl implements Constants4Stream {
 						mGUID = MessageApiImpl.putInOutboxAndTrack(message);
 
 						// Print progress
-						Xkomm2Api.apiPl(Constants4Stream.TO_QUEUE + mGUID + Constants4Stream.SEND_PROGRESS_1
-								+ (blockNum) + Constants4Stream.SEND_PROGRESS_2
-								+ (1 + Math.round(totalBytes / Constants4Stream.BLOCK_BYTES))
-								+ Constants4Stream.SEND_PROGRESS_3);
+						Xkomm2Api.apiPl(Constants4Stream.TO_QUEUE + mGUID + Constants4Stream.SEND_PROGRESS_1 + (blockNum) + Constants4Stream.SEND_PROGRESS_2 + (1 + Math.round(totalBytes / Constants4Stream.BLOCK_BYTES)) + Constants4Stream.SEND_PROGRESS_3);
 
 						// Update the queue for streaming logs
-						Stream2Server.this.getUpStreamProgressLogManager().insertNextProgress2UploadLog4(contactString,
-								Math.round(s.progress()) + "");
+						Stream2Server.this.getUpStreamProgressLogManager().insertNextProgress2UploadLog4(contactString, Math.round(s.progress()) + "");
 
 						// Update ?
 						thisStreamSpec.setCompletedP100(Math.round(s.progress()));
@@ -289,12 +282,9 @@ public class StreamUpApiImpl implements Constants4Stream {
 					// rrako: when out of the loop
 					s.reader.closeStream();
 
-					if (thisStreamSpec.isCancelled())
-						Stream2Server.this.getUpStreamProgressLogManager().insertNextProgress2UploadLog4(contactString,
-								STREAMING_CANCELLED + blockNum + NEW_LINE);
+					if (thisStreamSpec.isCancelled()) Stream2Server.this.getUpStreamProgressLogManager().insertNextProgress2UploadLog4(contactString, STREAMING_CANCELLED + blockNum + NEW_LINE);
 
-					else
-						this.notifyParties(blockNum);
+					else this.notifyParties(blockNum);
 
 				}
 
@@ -314,9 +304,7 @@ public class StreamUpApiImpl implements Constants4Stream {
 		private void norifyRecipient(String contactString, File file) {
 
 			// Send a warning message to recipient
-			String msg = Xkomm2Api.apiGetMe().getLogin().getEmail() + Constants4Stream.RECEIVING_1 + file.getName()
-					+ Constants4Stream.RECEIVING_2 + Math.round(file.length() / 1000) / 1000d
-					+ Constants4Stream.RECEIVING_3;
+			String msg = Xkomm2Api.apiGetMe().getLogin().getEmail() + Constants4Stream.RECEIVING_1 + file.getName() + Constants4Stream.RECEIVING_2 + Math.round(file.length() / 1000) / 1000d + Constants4Stream.RECEIVING_3;
 
 			Message warning = Xkomm2Api.apiGenerateMessage(contactString, Message.TEXT, msg.getBytes());
 			warning.setGood(true);
@@ -344,8 +332,7 @@ public class StreamUpApiImpl implements Constants4Stream {
 
 		if (b) {
 
-			Message message = Hub.hubGenerateMessage(contactString, Message.SYS,
-					NetworkConstants.SS_CANCEL_UPLOAD.getBytes());
+			Message message = Hub.hubGenerateMessage(contactString, Message.SYS, NetworkConstants.SS_CANCEL_UPLOAD.getBytes());
 
 			Xkomm2Api.apiSendMessage(message, Message.SAVE_HISTORY_NO);
 
